@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LibraNet Online Library</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 40px; background-color: #f4f4f9; color: #333; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #5a2a88; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: middle; }
+        th { background-color: #f8f8f8; }
+        button { font-size: 14px; padding: 8px 12px; border: none; border-radius: 5px; color: white; cursor: pointer; }
+        .btn-borrow { background-color: #28a745; }
+        .btn-return { background-color: #007bff; }
+        .status-borrowed { font-weight: bold; color: #dc3545; }
+        .message { padding: 15px; margin-bottom: 20px; border-radius: 5px; color: #fff; text-align: center; }
+        .message.success { background-color: #28a745; }
+        .message.error { background-color: #dc3545; }
+        .message.info { background-color: #17a2b8; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to LibraNet</h1>
+
+    <div th:if="${message}"
+         th:text="${message}"
+         th:classappend="${#strings.startsWith(message, 'Success')} ? 'message success' : (${#strings.startsWith(message, 'Error')} ? 'message error' : 'message info')"
+         class="message">
+    </div>
+
+    <h2>Library Catalog</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Details</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.itemID}"></td>
+            <td th:text="${item.getDetails()}"></td>
+            <td>
+                <span th:if="${item.available}">Available</span>
+                <span th:if="${!item.available}" class="status-borrowed" th:text="'Borrowed (Due: ' + ${item.dueDate} + ')'"></span>
+            </td>
+            <td>
+                <form th:action="@{/borrow}" method="post" th:if="${item.available}">
+                    <input type="hidden" name="itemId" th:value="${item.itemID}" />
+                    <button type="submit" class="btn-borrow">Borrow</button>
+                </form>
+                <form th:action="@{/return}" method="post" th:if="${!item.available}">
+                    <input type="hidden" name="itemId" th:value="${item.itemID}" />
+                    <button type="submit" class="btn-return">Return</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
