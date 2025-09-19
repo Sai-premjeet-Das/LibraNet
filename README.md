@@ -31,7 +31,7 @@ Make sure you have the following software installed on your system:
 
 1.  **Clone the repository** to your local machine:
     ```sh
-    git clone [https://github.com/Sai-premjeet-Das/LibraNet.git](https://github.com/YOUR_USERNAME/LibraNet.git)
+    git clone https://github.com/Sai-premjeet-Das/LibraNet.git
     ```
 
 2.  **Navigate to the project directory**:
